@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markov Chain</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+    .main {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    input {
+        border-radius: 12px;
+        width: 430px;
+        height: 45px;
+        padding-left: 12px;
+        padding-bottom: 2.5px;
+        border-color: #00bfff;
+        border-width: 3.5px;
+        font-family: "Roboto Mono";
+        font-size: 20px;
+    }
+
+    .container {
+        padding-bottom: 20px;
+    }
+
+    .slider {
+        width: 437px;
+        height: 30px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider::-moz-range-thumb {
+        background: #00bfff;
+        cursor: pointer;
+        border: none;
+    }
+</style>
+<body>
+    <div class="main">
+        <div class="container"><input type="text" id="seed" placeholder="Seed"><br></div>  
+        <div class="container"><input type="text" id="training" placeholder="Training"><br></div>
+        <input type="range" min=5 max=5000 id="length" class="slider"><br>
+        <button onclick="generate()">Generate</button>
+    </div>
+    <p id="final"></p>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    text = fetch($("#training").val()).then(x => x.text().then(y => training = y.split(" ")));
+    function generate() {
+        var final = $("#seed").val();
+        var text = fetch($("#training").val()).then(x => x.text().then(y => training = y.split(" ")));
+        for (let i = 0; i < parseInt($("#length").val()); i++) {
+            var lastWord = final.split(" ")[final.split(" ").length-1],
+            optionIndicies = [],
+            options = [];
+            for (let j = 0; j < training.length; j++){
+                if (training[j] == lastWord) {
+                    optionIndicies.push(j+1);
+                }
+            } for (let k = 0; k < optionIndicies.length; k++) {
+                options.push(training[optionIndicies[k]]);
+            }
+            final += " "+options[Math.floor(Math.random()*options.length)];
+        }
+        $("#final").html(final.replace(/undefined|\n\n|\n\n\n|(|)/g, ""))
+    }
+</script>
+</html>
