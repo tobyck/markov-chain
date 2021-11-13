@@ -1,121 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markov Chain</title>
-    <link rel="shortcut icon" type="image/jpg" href="TobyFavicon.png">
-</head>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
-    .user {
-        font-family: "roboto mono";
-        font-size: 20px;
-        text-align: center;
-        padding-top: 13px;
-        color: #eee;
-    }
-
-    input {
-        font-family: "roboto mono";
-        font-size: 20px;
-        outline: none;
-        border: none;
-        width: 350px;
-        color: #eee;
-        background-image: linear-gradient(#eee, #eee);
-        background-position: bottom 5px center;
-        background-size: calc(100% - 13px) 2px;
-        background-repeat: no-repeat;
-        background-color: #333  ;
-        padding: 10px;
-    }
-
-    #length {
-        width: 50px;
-        text-align: center;
-    }
-
-    #final {
-        position: absolute;
-        top: 130px;
-        left: 50%;
-        transform: translate(-50%, 0%);
-        width: 67vw;
-        font-family: "roboto mono";
-        color: #eee;
-        font-size: 20px;
-        padding-bottom: 100px;
-    }
-
-    body {
-        background-color: #333;
-    }
-
-    button {
-        font-size: 20px;
-        font-family: "roboto mono";
-        background-color: #eee;
-        border: none;
-        height: 45px;
-        width: 125px;
-        border-radius: 6px;
-        color: #333;
-        transition: 0.4s ease;
-    }
-
-    button:hover {
-        background-color: #aaa;
-        transition: 0.4s ease;
-        cursor: pointer;
-    }
-</style>
-<body>
-    <p class="user">Begin with: <input type="text" id="seed">, and add <input type="text" id="length">words.&nbsp&nbsp&nbsp<button onclick="generate()">Generate</button></p>
-    <p id="final"></p>
-</body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-
-    var text = fetch("https://raw.githubusercontent.com/TobyCK/markov-chain-training/main/longtraining.txt")
-    .then(x => x.text())
-    .then(y => {
-        training = y.split(" ").slice(0, y.split(" ").length-1); 
-        training.push(y.split(" ")[0]); 
-    });
-
-    function generate() {      
-        if ($("#seed").val()[$("#seed").val().length-1] == " ") {
-            final = $("#seed").val()
-        } else {
-            final = $("#seed").val()+" "
-        }
-        for (let i = 0; i < parseInt($("#length").val()); i++) {
-            var list = final.split(" ");
-            var lastWord = list.slice(0, list.length-1)[list.slice(0, list.length-1).length-1];
-            if (!training.includes(lastWord)) {
-                alert("Please enter a different seed.")
-                $("#seed").val("");
-                return;
-            }
-            var optionIndicies = [], options = [];
-            for (let j = 0; j < training.length-1; j++) if (training[j] == lastWord) optionIndicies.push(j+1);
-            for (let k = 0; k < optionIndicies.length; k++) options.push(training[optionIndicies[k]]);
-            final += options[Math.floor(Math.random()*options.length)]+" ";
-        }
-        $("#final").html(final.replace(/\n|\n\n|\(|\)/g, ""))
-    }
-    
-    document.addEventListener("keydown", evt => {
-        if (evt.keyCode == 13) {
-            if ($("#length").val().length < 1 && $("#seed").is(":focus")) {
-                $("#length").focus()
-            } else {
-                generate();
-            }
-        }
-    });
-
-</script>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Markov Chain</title>
+        <link rel="shortcut icon" type="image/jpg" href="TobyFavicon.png">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <p class="user">Begin with: <input type="text" id="seed">, and add <input type="text" id="length">words.&nbsp&nbsp&nbsp<button onclick="generate()">Generate</button></p>
+        <p id="final"></p>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </html>
