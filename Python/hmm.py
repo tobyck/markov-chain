@@ -3,7 +3,6 @@ def markov_chain(prompt, length):
     training_data = requests.get("https://raw.githubusercontent.com/TobyCK/markov-chain-training/main/Training/dataset1.txt").text.split(" ")
     final = prompt
     options_length = 0
-    nouns = "".join([x for x in requests.get("https://raw.githubusercontent.com/TallonKH/NounPlurals/master/pluralnouns.txt").text if not x.isdigit()]).split("\n")
     last_word = final.split(" ")[-1]
     if last_word in training_data:
         for i in range(length):
