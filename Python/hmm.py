@@ -1,6 +1,7 @@
 import random, requests, math, time
 def markov_chain(prompt, length):
     training_data = requests.get("https://raw.githubusercontent.com/TobyCK/markov-chain-training/main/Training/dataset1.txt").text.split(" ")
+    nouns = requests.get("https://raw.githubusercontent.com/TallonKH/NounPlurals/master/pluralnouns.txt").text.split("\n")
     final = prompt
     options_length = 0
     last_word = final.split(" ")[-1]
@@ -13,8 +14,8 @@ def markov_chain(prompt, length):
                     options_length += 1
             for k in range(len(training_data)):
                 if training_data[k] == last_word:     
-                    if training_data[k+1] in prompt:
-                        for l in range(math.ceil(options_length/10)):
+                    if training_data[k+1] in prompt and training_data[k+1] in nouns:
+                        for l in range(math.ceil(options_length/8)):
                             options.append(training_data[k+1])
                     else:
                         options.append(training_data[k+1])
