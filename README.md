@@ -6,3 +6,5 @@ This is a Markov Chain that generates text. There is a version made in JavaScrip
 from hmm_write import hmm
 hmm.write("The quick brown fox jumps over the", 50, 0.3)
 ```
+
+More info at [pypi.org/project/hmm-write](https://pypi.org/project/hmm-write/)
